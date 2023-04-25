@@ -1,3 +1,7 @@
+require("dotenv").config();
+require("./db/conn.js");
+const Client = require("./model/Client.js");
+
 const {
   createBot,
   createProvider,
@@ -8,12 +12,15 @@ const QRPortalWeb = require("@bot-whatsapp/portal");
 const BaileysProvider = require("@bot-whatsapp/provider/baileys");
 const MockAdapter = require("@bot-whatsapp/database/mock");
 
+let telefone
 let nome
 let data
 let pessoas
 let horas
 let cardapio
 
+const flowPresupuestoConfirmado = addKeyword('Confirmar')
+.addAnswer
 
 const flowPresupuesto = addKeyword(['Quero fazer um orçamento','Quero fazer o orçamento de novo'])
 .addAnswer('Certo, vou precisar de algumas informações para encaminhar a fazer seu orçamento')
@@ -43,26 +50,22 @@ async(ctx,{flowDynamic,fallBack})=>{
 })
 .addAnswer(['Ok! Já quase finalizamos... preciso saber quais drinks você gostaria ter no cardápio',
 'De novo, no caso não consiga informar direito pode escrever "Sugestão"',
-'Ou também, dizer quais bebidas são da sua preferência (Vodka, Gin, Rum, etc)'],
+'Ou também, dizer quais bebidas são da sua preferência (Vodka, Gin, Rum, etc)',
+'_Pör gentileza, preciso que seja numa mensagem só, pode escrever quanto quiser_'],
 {capture:true},
 async(ctx, {fallBack,flowDynamic})=>{
     if(ctx.body.length <= 2) return fallBack()
     cardapio=ctx.body
     return flowDynamic(`Foi informado: ${cardapio}`)
 })
-.addAnswer(['Ótimo, para finalizar vou mostrar aqui todos os dados informados para conseguir confirmar'],
-async({flowDynamic})=>{
-    return flowDynamic(
-    `*NOME*: ${nome}`,
-    `*DATA*: ${data}`,
-    `*PESSOAS/CONVIDADOS*: ${pessoas}`,
-    `*CARDÁPIO*: ${cardapio}`
-    )}
-,
+.addAnswer(['Perfeito, se estiver tudo certo pode clicar em *Confirmar* ou *Quero fazer o orçamento de novo*'],
+
 {buttons: [
         {body:'Confirmar'},
         {body:'Quero fazer o orçamento de novo'}
     ]})
+    null,
+    [flowPresupuestoConfirmado]
 
 const flowPrincipal = addKeyword([
   "oi",
@@ -80,8 +83,21 @@ const flowPrincipal = addKeyword([
     'Me informa por gentileza seu nome',
     {capture: true},
     async(ctx , {fallBack, flowDynamic})=>{
-        if(ctx.body.length <= 2) return fallBack()
+      
         nome=ctx.body
+        telefone= ctx.from
+        if(ctx.body.length <= 2) return fallBack()
+          const newClient = new Client({
+            telefone,
+            nome
+          });
+        
+          try {
+            await newClient.save();
+        
+          } catch (error) {
+            console.log(error);
+          }
         return flowDynamic(`Prazer ${nome}🤝!`)
     }
   )
