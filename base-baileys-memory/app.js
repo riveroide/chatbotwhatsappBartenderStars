@@ -25,13 +25,22 @@ const flowPresupuestoConfirmado = addKeyword('Confirmar')
 const flowPresupuesto = addKeyword(['Quero fazer um orçamento','Quero fazer o orçamento de novo'])
 .addAnswer('Certo, vou precisar de algumas informações para encaminhar a fazer seu orçamento')
 .addAnswer(['Por favor escreva para mim a *data* do evento no formato DD/MM/AAAA',
-'Por exemplo 12/09/2027'],
+'_Por exemplo 12/09/2027_'],
 {capture:true},
 async(ctx,{fallBack,flowDynamic})=>{
     if(ctx.body.length !==10) return fallBack()
+    telefone=ctx.from
     data=ctx.body
+    try {
+      await Client.findOneAndUpdate({telefone},{data})
+    } catch (error) {
+      console.log(error)
+    }
+  
     return flowDynamic(`Data informada: ${data}`)
-})
+  }
+    
+)
 .addAnswer('Agora a *quantidade de pessoas/convidados*',
 {capture:true},
 async(ctx,{fallBack,flowDynamic})=>{
@@ -83,22 +92,28 @@ const flowPrincipal = addKeyword([
     'Me informa por gentileza seu nome',
     {capture: true},
     async(ctx , {fallBack, flowDynamic})=>{
-      
         nome=ctx.body
         telefone= ctx.from
         if(ctx.body.length <= 2) return fallBack()
-          const newClient = new Client({
-            telefone,
-            nome
-          });
         
-          try {
-            await newClient.save();
+          const isnew = await Client.find({ telefone });
         
-          } catch (error) {
-            console.log(error);
+          if (isnew.length) {
+            return flowDynamic(`Que bom ter você de volta ${isnew[0].nome}🤝!`)
+          } else {
+            const newClient = new Client({
+              telefone,
+              nome
+            });
+          
+            try {
+              await newClient.save();
+          
+            } catch (error) {
+              console.log(error);
+            }
+          return flowDynamic(`Prazer lhe conhecer ${nome}🤝!`)
           }
-        return flowDynamic(`Prazer ${nome}🤝!`)
     }
   )
   .addAnswer(` Como posso lhe ajudar?`,{

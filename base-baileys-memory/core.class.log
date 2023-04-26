@@ -2,10 +2,10 @@
   key: {
     remoteJid: '559584109615@s.whatsapp.net',
     fromMe: false,
-    id: '3EB011918B70ACC0C2B25D',
+    id: '3EB0C85FA82C96E9D16DDB',
     participant: undefined
   },
-  messageTimestamp: 1682420227,
+  messageTimestamp: 1682503138,
   pushName: 'Nico',
   message: Message {
     conversation: 'oi',
@@ -21,18 +21,61 @@
   key: {
     remoteJid: '559584109615@s.whatsapp.net',
     fromMe: false,
-    id: '3EB09ADDCD58E1188AF232',
+    id: '3EB0E67FE8307698D76DE4',
     participant: undefined
   },
-  messageTimestamp: 1682420235,
+  messageTimestamp: 1682503141,
   pushName: 'Nico',
   message: Message {
-    conversation: 'Nicolás',
+    conversation: 'nico',
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
-  body: 'Nicolás',
+  body: 'nico',
+  from: '559584109615'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '559584109615@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB060D354224CAB8BBAFF',
+    participant: undefined
+  },
+  messageTimestamp: 1682503145,
+  pushName: 'Nico',
+  message: Message {
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    },
+    buttonsResponseMessage: ButtonsResponseMessage {
+      selectedButtonId: 'id-btn-0',
+      selectedDisplayText: 'Quero fazer um orçamento',
+      contextInfo: [ContextInfo],
+      type: 1
+    }
+  },
+  body: 'Quero fazer um orçamento',
+  from: '559584109615'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '559584109615@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB0EE5C1AD718A1681F50',
+    participant: undefined
+  },
+  messageTimestamp: 1682503149,
+  pushName: 'Nico',
+  message: Message {
+    conversation: '01/01/1000',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '01/01/1000',
   from: '559584109615'
 }

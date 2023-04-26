@@ -5,10 +5,10 @@ const clientSchema = new Schema(
   {
     telefone: { type: String, required: true },
     nome: { type: String, required: true },
-    data: { type: String },
-    pessoas: { type: String },
-    horas: { type: String },
-    cardapio: { type: String },
+    data: { type: String , default: 'DD/MM/AAAA'},
+    pessoas: { type: String, default: '0' },
+    horas: { type: String, default:'0'},
+    cardapio: { type: String, default:'empty'},
     status: { type: String, default: "pending" },
   },
   {
